@@ -22,87 +22,83 @@ import itertools
 from .base import Num2Word_Base
 from .utils import get_digits, splitbyx
 
-ZERO = ('zero',)
+ZERO = ("zero",)
 
 ONES = {
-    1: ('jeden',),
-    2: ('dwa',),
-    3: ('trzy',),
-    4: ('cztery',),
-    5: ('pięć',),
-    6: ('sześć',),
-    7: ('siedem',),
-    8: ('osiem',),
-    9: ('dziewięć',),
+    1: ("jeden",),
+    2: ("dwa",),
+    3: ("trzy",),
+    4: ("cztery",),
+    5: ("pięć",),
+    6: ("sześć",),
+    7: ("siedem",),
+    8: ("osiem",),
+    9: ("dziewięć",),
 }
 
 TENS = {
-    0: ('dziesięć',),
-    1: ('jedenaście',),
-    2: ('dwanaście',),
-    3: ('trzynaście',),
-    4: ('czternaście',),
-    5: ('piętnaście',),
-    6: ('szesnaście',),
-    7: ('siedemnaście',),
-    8: ('osiemnaście',),
-    9: ('dziewiętnaście',),
+    0: ("dziesięć",),
+    1: ("jedenaście",),
+    2: ("dwanaście",),
+    3: ("trzynaście",),
+    4: ("czternaście",),
+    5: ("piętnaście",),
+    6: ("szesnaście",),
+    7: ("siedemnaście",),
+    8: ("osiemnaście",),
+    9: ("dziewiętnaście",),
 }
 
 TWENTIES = {
-    2: ('dwadzieścia',),
-    3: ('trzydzieści',),
-    4: ('czterdzieści',),
-    5: ('pięćdziesiąt',),
-    6: ('sześćdziesiąt',),
-    7: ('siedemdziesiąt',),
-    8: ('osiemdziesiąt',),
-    9: ('dziewięćdzisiąt',),
+    2: ("dwadzieścia",),
+    3: ("trzydzieści",),
+    4: ("czterdzieści",),
+    5: ("pięćdziesiąt",),
+    6: ("sześćdziesiąt",),
+    7: ("siedemdziesiąt",),
+    8: ("osiemdziesiąt",),
+    9: ("dziewięćdziesiąt",),
 }
 
 HUNDREDS = {
-    1: ('sto',),
-    2: ('dwieście',),
-    3: ('trzysta',),
-    4: ('czterysta',),
-    5: ('pięćset',),
-    6: ('sześćset',),
-    7: ('siedemset',),
-    8: ('osiemset',),
-    9: ('dziewięćset',),
+    1: ("sto",),
+    2: ("dwieście",),
+    3: ("trzysta",),
+    4: ("czterysta",),
+    5: ("pięćset",),
+    6: ("sześćset",),
+    7: ("siedemset",),
+    8: ("osiemset",),
+    9: ("dziewięćset",),
 }
 
 THOUSANDS = {
-    1: ('tysiąc', 'tysiące', 'tysięcy'),  # 10^3
+    1: ("tysiąc", "tysiące", "tysięcy"),  # 10^3
 }
 
-prefixes = (   # 10^(6*x)
-    "mi",      # 10^6
-    "bi",      # 10^12
-    "try",     # 10^18
-    "kwadry",  # 10^24
-    "kwinty",  # 10^30
-    "seksty",  # 10^36
-    "septy",   # 10^42
-    "okty",    # 10^48
-    "nony",    # 10^54
-    "decy"     # 10^60
+prefixes = (    # 10^(6*x)
+    "mi",       # 10^6
+    "bi",       # 10^12
+    "try",      # 10^18
+    "kwadry",   # 10^24
+    "kwinty",   # 10^30
+    "seksty",   # 10^36
+    "septy",    # 10^42
+    "okty",     # 10^48
+    "nony",     # 10^54
+    "decy",     # 10^60
 )
 suffixes = ("lion", "liard")  # 10^x or 10^(x+3)
 
 for idx, (p, s) in enumerate(itertools.product(prefixes, suffixes)):
     name = p + s
-    THOUSANDS[idx+2] = (name, name + 'y', name + 'ów')
+    THOUSANDS[idx + 2] = (name, name + "y", name + "ów")
 
 
 class Num2Word_PL(Num2Word_Base):
     CURRENCY_FORMS = {
-        'PLN': (
-            ('złoty', 'złote', 'złotych'), ('grosz', 'grosze', 'groszy')
-        ),
-        'EUR': (
-            ('euro', 'euro', 'euro'), ('cent', 'centy', 'centów')
-        ),
+        "PLN": (("złoty", "złote", "złotych"), ("grosz", "grosze", "groszy")),
+        "EUR": (("euro", "euro", "euro"), ("cent", "centy", "centów")),
     }
 
     def setup(self):
@@ -110,13 +106,13 @@ class Num2Word_PL(Num2Word_Base):
         self.pointword = "przecinek"
 
     def to_cardinal(self, number):
-        n = str(number).replace(',', '.')
-        if '.' in n:
-            left, right = n.split('.')
-            return u'%s %s %s' % (
+        n = str(number).replace(",", ".")
+        if "." in n:
+            left, right = n.split(".")
+            return "%s %s %s" % (
                 self._int2word(int(left)),
                 self.pointword,
-                self._int2word(int(right))
+                self._int2word(int(right)),
             )
         else:
             return self._int2word(int(n))
@@ -162,4 +158,4 @@ class Num2Word_PL(Num2Word_Base):
             if i > 0:
                 words.append(self.pluralize(x, THOUSANDS[i]))
 
-        return ' '.join(words)
+        return " ".join(words)
